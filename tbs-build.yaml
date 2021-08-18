@@ -184,11 +184,11 @@ spec:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
       revision: tbs
-    subPath: "src/cartservice"
-  build:
-    env:
-      - name: BP_DOTNET_PROJECT_PATH"
-        value: "src"
+    subPath: "src/cartservice/src"
+  # build:
+  #   env:
+  #     - name: BP_DOTNET_PROJECT_PATH"
+  #       value: "src"
 # ---
 # apiVersion: kpack.io/v1alpha1
 # kind: Builder
@@ -225,45 +225,45 @@ spec:
       revision: tbs
     subPath: "src/emailservice"
 
-# ---
-# apiVersion: kpack.io/v1alpha1
-# kind: Image
-# metadata:
-#   name: recommendationservice
-#   namespace: microservices-demo
-# spec:
-#   serviceAccount: microservices-demo
-#   tag:  harbor.vmw.binbytes.io/microservice-demo/recommendationservice
-#   builder:
-#     name: python-builder
-#     kind: Builder
-#   source:
-#     git:
-#       url: https://github.com/logankimmel/microservices-demo.git
-#       revision: tbs
-#     subPath: "src/recommendationservice"
-#   build:
-#     env:
-#       - name: "GOOGLE_ENTRYPOINT"
-#         value: "python recommendation_server.py"
-# ---
-# apiVersion: kpack.io/v1alpha1
-# kind: Image
-# metadata:
-#   name: loadgenerator
-#   namespace: microservices-demo
-# spec:
-#   serviceAccount: microservices-demo
-#   tag:  harbor.vmw.binbytes.io/microservice-demo/loadgenerator
-#   builder:
-#     name: python-builder
-#     kind: Builder
-#   source:
-#     git:
-#       url: https://github.com/logankimmel/microservices-demo.git
-#       revision: tbs
-#     subPath: "src/loadgenerator"
-#   build:
-#     env:
-#       - name: "GOOGLE_ENTRYPOINT"
-#         value: "loadgen.sh"
+---
+apiVersion: kpack.io/v1alpha1
+kind: Image
+metadata:
+  name: recommendationservice
+  namespace: microservices-demo
+spec:
+  serviceAccount: microservices-demo
+  tag:  harbor.vmw.binbytes.io/microservice-demo/recommendationservice
+  builder:
+    name: python-builder
+    kind: Builder
+  source:
+    git:
+      url: https://github.com/logankimmel/microservices-demo.git
+      revision: tbs
+    subPath: "src/recommendationservice"
+  # build:
+  #   env:
+  #     - name: "GOOGLE_ENTRYPOINT"
+  #       value: "python recommendation_server.py"
+---
+apiVersion: kpack.io/v1alpha1
+kind: Image
+metadata:
+  name: loadgenerator
+  namespace: microservices-demo
+spec:
+  serviceAccount: microservices-demo
+  tag:  harbor.vmw.binbytes.io/microservice-demo/loadgenerator
+  builder:
+    name: python-builder
+    kind: Builder
+  source:
+    git:
+      url: https://github.com/logankimmel/microservices-demo.git
+      revision: tbs
+    subPath: "src/loadgenerator"
+  # build:
+  #   env:
+  #     - name: "GOOGLE_ENTRYPOINT"
+  #       value: "loadgen.sh"

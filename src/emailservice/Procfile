@@ -1,1 +1,1 @@
-python email_server.py
+web: python email_server.py
