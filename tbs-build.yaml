@@ -5,58 +5,41 @@ metadata:
   name: microservices-demo
   namespace: microservices-demo
 secrets:
-- name: demo-harbor-credentials
+- name: harbor-credentials
 imagePullSecrets:
-- name: demo-harbor-credentials
----
-apiVersion: kpack.io/v1alpha1
-kind: Builder
-metadata:
-  name: spring-microservice-builder
-  namespace: microservices-demo
-spec:
-  serviceAccount: microservices-demo
-  tag:  harbor.vmw.binbytes.io/microservice-demo/spring-builder
-  stack:
-    name: full
-    kind: ClusterStack
-  store:
-    name: default
-    kind: ClusterStore
-  order:
-  - group:
-    - id: tanzu-buildpacks/java
-  - group:
-    - id: tanzu-buildpacks/nodejs
----
-apiVersion: kpack.io/v1alpha1
-kind: Image
-metadata:
-  name: currencyservice-image
-  namespace: microservices-demo
-spec:
-  tag:  harbor.vmw.binbytes.io/microservices-demo/currencyservice
-  serviceAccount: microservices-demo
-  builder:
-    name: spring-microservice-builder
-    kind: Builder
-  source:
-    git:
-      url: https://github.com/logankimmel/microservices-demo.git
-      revision: tbs
-    subPath: src/currencyservice
+- name: harbor-credentials
+# ---
+# apiVersion: kpack.io/v1alpha1
+# kind: Builder
+# metadata:
+#   name: spring-microservices-builder
+#   namespace: microservices-demo
+# spec:
+#   serviceAccount: microservices-demo
+#   tag:  harbor.vmw.binbytes.io/microservices-demo/spring-builder
+#   stack:
+#     name: full
+#     kind: ClusterStack
+#   store:
+#     name: default
+#     kind: ClusterStore
+#   order:
+#   - group:
+#     - id: tanzu-buildpacks/java
+#   - group:
+#     - id: tanzu-buildpacks/nodejs
 ---
 apiVersion: kpack.io/v1alpha1
 kind: Image
 metadata:
-  name: paymentservice-image
+  name: paymentservice
   namespace: microservices-demo
 spec:
   tag:  harbor.vmw.binbytes.io/microservices-demo/paymentservice
   serviceAccount: microservices-demo
   builder:
-    name: spring-microservice-builder
-    kind: Builder
+    name: default
+    kind: ClusterBuilder
   source:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
@@ -66,37 +49,37 @@ spec:
 apiVersion: kpack.io/v1alpha1
 kind: Image
 metadata:
-  name: currencyservice-image
+  name: currencyservice
   namespace: microservices-demo
 spec:
   tag:  harbor.vmw.binbytes.io/microservices-demo/currencyservice
   serviceAccount: microservices-demo
   builder:
-    name: spring-microservice-builder
-    kind: Builder
+    name: default
+    kind: ClusterBuilder
   source:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
       revision: tbs
     subPath: src/currencyservice
----
-apiVersion: kpack.io/v1alpha1
-kind: Builder
-metadata:
-  name: microservices-demo-go-builder
-  namespace: microservices-demo
-spec:
-  serviceAccount: microservices-demo
-  tag:  harbor.vmw.binbytes.io/microservices-demo/go-builder.git
-  stack:
-    name: tiny
-    kind: ClusterStack
-  store:
-    name: default
-    kind: ClusterStore
-  order:
-  - group:
-    - id: tanzu-buildpacks/go
+# ---
+# apiVersion: kpack.io/v1alpha1
+# kind: Builder
+# metadata:
+#   name: microservices-demo-go-builder
+#   namespace: microservices-demo
+# spec:
+#   serviceAccount: microservices-demo
+#   tag:  harbor.vmw.binbytes.io/microservices-demo/go-builder
+#   stack:
+#     name: tiny
+#     kind: ClusterStack
+#   store:
+#     name: default
+#     kind: ClusterStore
+#   order:
+#   - group:
+#     - id: tanzu-buildpacks/go
 ---
 apiVersion: kpack.io/v1alpha1
 kind: Image
@@ -104,11 +87,11 @@ metadata:
   name: frontend
   namespace: microservices-demo
 spec:
-  serviceAccount: hello-go-sa
+  serviceAccount: microservices-demo
   tag:  harbor.vmw.binbytes.io/microservices-demo/frontend
   builder:
-    name: microservices-demo-go-builder
-    kind: Builder
+    name: default
+    kind: ClusterBuilder
   source:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
@@ -121,11 +104,11 @@ metadata:
   name: productcatalogservice
   namespace: microservices-demo
 spec:
-  serviceAccount: hello-go-sa
+  serviceAccount: microservices-demo
   tag:  harbor.vmw.binbytes.io/microservices-demo/productcatalogservice
   builder:
-    name: microservices-demo-go-builder
-    kind: Builder
+    name: default
+    kind: ClusterBuilder
   source:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
@@ -138,11 +121,11 @@ metadata:
   name: shippingservice
   namespace: microservices-demo
 spec:
-  serviceAccount: hello-go-sa
+  serviceAccount: microservices-demo
   tag:  harbor.vmw.binbytes.io/microservices-demo/shippingservice
   builder:
-    name: microservices-demo-go-builder
-    kind: Builder
+    name: default
+    kind: ClusterBuilder
   source:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
@@ -155,34 +138,35 @@ metadata:
   name: checkoutservice
   namespace: microservices-demo
 spec:
-  serviceAccount: hello-go-sa
+  serviceAccount: microservices-demo
   tag:  harbor.vmw.binbytes.io/microservices-demo/checkoutservice
   builder:
-    name: microservices-demo-go-builder
-    kind: Builder
+    name: default
+    kind: ClusterBuilder
   source:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
       revision: tbs
     subPath: src/checkoutservice
----
-apiVersion: kpack.io/v1alpha1
-kind: Builder
-metadata:
-  name: microservices-demo-dotnet-builder
-  namespace: microservices-demo
-spec:
-  serviceAccount: microservices-demo
-  tag:  harbor.vmw.binbytes.io/microservices-demo/dotnet-builder
-  stack:
-    name: base
-    kind: ClusterStack
-  store:
-    name: default
-    kind: ClusterStore
-  order:
-  - group:
-    - id: tanzu-buildpacks/dotnet-core
+# ---
+# apiVersion: kpack.io/v1alpha1
+# kind: Builder
+# metadata:
+#   name: microservices-demo-dotnet-builder
+#   namespace: microservices-demo
+# spec:
+#   serviceAccount: microservices-demo
+#   tag:  harbor.vmw.binbytes.io/microservices-demo/dotnet-builder
+#   stack:
+#     name: full
+#     kind: ClusterStack
+#   store:
+#     name: default
+#     kind: ClusterStore
+#   order:
+#   - group:
+#     - id: tanzu-buildpacks/dotnet-core
+  
 ---
 # Creates Spring Pet Clinic image to be built
 apiVersion: kpack.io/v1alpha1
@@ -192,15 +176,37 @@ metadata:
   namespace: microservices-demo
 spec:
   serviceAccount: microservices-demo
-  tag:  harbor.vmw.binbytes.io/demo-app/cartservice
+  tag:  harbor.vmw.binbytes.io/microservices-demo/cartservice
   builder:
-    name: microservices-demo-dotnet-builder
-    kind: Builder
+    name: default
+    kind: ClusterBuilder
   source:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
       revision: tbs
     subPath: "src/cartservice"
+  build:
+    env:
+      - name: BP_DOTNET_PROJECT_PATH"
+        value: "src"
+# ---
+# apiVersion: kpack.io/v1alpha1
+# kind: Builder
+# metadata:
+#   name: python-builder
+#   namespace: microservices-demo
+# spec:
+#   serviceAccount: microservices-demo
+#   tag: harbor.vmw.binbytes.io/microservices-demo/python-builder
+#   stack:
+#     name: full
+#     kind: ClusterStack
+#   store:
+#     name: default
+#     kind: ClusterStore
+#   order:
+#   - group:
+#     - id: tanzu-buildpacks/python
 ---
 apiVersion: kpack.io/v1alpha1
 kind: Image
@@ -209,58 +215,55 @@ metadata:
   namespace: microservices-demo
 spec:
   serviceAccount: microservices-demo
-  tag:  harbor.vmw.binbytes.io/demo-app/emailservice
+  tag:  harbor.vmw.binbytes.io/microservices-demo/emailservice
   builder:
-    name: google
+    name: default
     kind: ClusterBuilder
   source:
     git:
       url: https://github.com/logankimmel/microservices-demo.git
       revision: tbs
     subPath: "src/emailservice"
-  build:
-    env:
-      - name: "GOOGLE_ENTRYPOINT"
-        value: "python email_server.py"
----
-apiVersion: kpack.io/v1alpha1
-kind: Image
-metadata:
-  name: recommendationservice
-  namespace: microservices-demo
-spec:
-  serviceAccount: microservices-demo
-  tag:  harbor.vmw.binbytes.io/demo-app/recommendationservice
-  builder:
-    name: google
-    kind: ClusterBuilder
-  source:
-    git:
-      url: https://github.com/logankimmel/microservices-demo.git
-      revision: tbs
-    subPath: "src/recommendationservice"
-  build:
-    env:
-      - name: "GOOGLE_ENTRYPOINT"
-        value: "python recommendation_server.py"
----
-apiVersion: kpack.io/v1alpha1
-kind: Image
-metadata:
-  name: loadgenerator
-  namespace: microservices-demo
-spec:
-  serviceAccount: microservices-demo
-  tag:  harbor.vmw.binbytes.io/demo-app/loadgenerator
-  builder:
-    name: google
-    kind: ClusterBuilder
-  source:
-    git:
-      url: https://github.com/logankimmel/microservices-demo.git
-      revision: tbs
-    subPath: "src/loadgenerator"
-  build:
-    env:
-      - name: "GOOGLE_ENTRYPOINT"
-        value: "loadgen.sh"
+
+# ---
+# apiVersion: kpack.io/v1alpha1
+# kind: Image
+# metadata:
+#   name: recommendationservice
+#   namespace: microservices-demo
+# spec:
+#   serviceAccount: microservices-demo
+#   tag:  harbor.vmw.binbytes.io/microservice-demo/recommendationservice
+#   builder:
+#     name: python-builder
+#     kind: Builder
+#   source:
+#     git:
+#       url: https://github.com/logankimmel/microservices-demo.git
+#       revision: tbs
+#     subPath: "src/recommendationservice"
+#   build:
+#     env:
+#       - name: "GOOGLE_ENTRYPOINT"
+#         value: "python recommendation_server.py"
+# ---
+# apiVersion: kpack.io/v1alpha1
+# kind: Image
+# metadata:
+#   name: loadgenerator
+#   namespace: microservices-demo
+# spec:
+#   serviceAccount: microservices-demo
+#   tag:  harbor.vmw.binbytes.io/microservice-demo/loadgenerator
+#   builder:
+#     name: python-builder
+#     kind: Builder
+#   source:
+#     git:
+#       url: https://github.com/logankimmel/microservices-demo.git
+#       revision: tbs
+#     subPath: "src/loadgenerator"
+#   build:
+#     env:
+#       - name: "GOOGLE_ENTRYPOINT"
+#         value: "loadgen.sh"
