@@ -1,1 +1,1 @@
-web: loadgen.sh
+web: sh loadgen.sh
