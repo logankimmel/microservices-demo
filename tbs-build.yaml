@@ -61,6 +61,11 @@ spec:
       url: https://github.com/logankimmel/microservices-demo.git
       revision: tbs
     subPath: src/frontend
+  build:
+    env:
+      - name: BP_KEEP_FILES
+        value: 'static/*:templates/*'
+  
 ---
 apiVersion: kpack.io/v1alpha1
 kind: Image
@@ -78,6 +83,10 @@ spec:
       url: https://github.com/logankimmel/microservices-demo.git
       revision: tbs
     subPath: src/productcatalogservice
+  build:
+    env:
+      - name: BP_KEEP_FILES
+        value: 'products.json'
 ---
 apiVersion: kpack.io/v1alpha1
 kind: Image
